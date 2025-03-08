@@ -1,15 +1,17 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
-import models, schemas
+from schemas.response_schema import UserCreate, UserResponse
+from schemas.baseschemas import UserLogin
+import models
 from database import get_db
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-@router.post("/signup", response_model=schemas.UserResponse)
-def signup(user: schemas.UserCreate, db: Session = Depends(get_db)):
+@router.post("/signup", response_model=UserResponse)
+def signup(user: UserCreate, db: Session = Depends(get_db)):
     existing_user = db.query(models.User).filter(models.User.user_email == user.user_email).first()
     if existing_user:
         raise HTTPException(status_code=400, detail="Email already registered")
@@ -22,7 +24,7 @@ def signup(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return db_user
 
 @router.post("/login")
-def login(user: schemas.UserLogin, db: Session = Depends(get_db)):
+def login(user: UserLogin, db: Session = Depends(get_db)):
     db_user = db.query(models.User).filter(models.User.user_email == user.user_email).first()
     if not db_user or not pwd_context.verify(user.password, db_user.password):
         raise HTTPException(status_code=401, detail="Invalid email or password")

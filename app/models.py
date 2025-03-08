@@ -1,5 +1,6 @@
-from sqlalchemy import Column, String, DateTime
+from sqlalchemy import Column, String, DateTime, ForeignKey
 from sqlalchemy.dialects.mysql import CHAR
+from sqlalchemy.orm import relationship
 import uuid
 from datetime import datetime
 from database import Base

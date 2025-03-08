@@ -3,3 +3,7 @@ fastapi
 uvicorn
 sqlalchemy
 dotenv
+pymysql
+pydantic[email]
+passlib
+cryptography

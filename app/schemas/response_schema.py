@@ -1,5 +1,7 @@
-from baseschemas import UserBase, NoteBase
 import uuid
+from schemas.baseschemas import UserBase, NoteBase
+from datetime import datetime
+from typing import List
 
 class UserCreate(UserBase):
     password: str
